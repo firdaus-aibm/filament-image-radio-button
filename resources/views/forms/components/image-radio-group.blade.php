@@ -93,7 +93,7 @@
 
     .img-radio img {
         height: auto;
-        max-height: 600px;
+        max-height: 300px;
         -o-object-fit: contain;
         object-fit: contain;
         -o-object-position: center;
