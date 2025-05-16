@@ -125,25 +125,35 @@
     }
 </style>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+function updateGreyScale() {
     const radioButtons = document.querySelectorAll('input[type="radio"][name="{{ $getId() }}"]');
     const ul = document.querySelector('ul[role="list"]');
+    if (!ul) return;
 
-    function updateGreyScale() {
-        // Check if any radio is selected
-        const checked = Array.from(radioButtons).find(rb => rb.checked);
-        if (checked) {
-            ul.classList.add('has-selected');
-        } else {
-            ul.classList.remove('has-selected');
-        }
+    // Check if any radio is selected
+    const checked = Array.from(radioButtons).find(rb => rb.checked);
+    if (checked) {
+        ul.classList.add('has-selected');
+    } else {
+        ul.classList.remove('has-selected');
     }
+}
 
+function setupGreyScale() {
+    const radioButtons = document.querySelectorAll('input[type="radio"][name="{{ $getId() }}"]');
     radioButtons.forEach(rb => {
+        rb.removeEventListener('change', updateGreyScale); // Prevent duplicate listeners
         rb.addEventListener('change', updateGreyScale);
     });
-
-    // Initial check
     updateGreyScale();
+}
+
+document.addEventListener('DOMContentLoaded', setupGreyScale);
+
+// Re-attach after Livewire DOM updates
+document.addEventListener('livewire:load', function () {
+    Livewire.hook('message.processed', () => {
+        setupGreyScale();
+    });
 });
 </script>
