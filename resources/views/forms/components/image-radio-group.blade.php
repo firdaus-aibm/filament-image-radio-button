@@ -65,6 +65,12 @@
         border: 3px solid rgba(var(--primary-500),var(--tw-bg-opacity));
     }
 
+    /* ...except the one whose radio is checked */
+    input[name="{{ $getId() }}"]:checked ~ .img-radio img {
+        filter: none;
+        opacity: 1;
+    }
+
     .rb-image {
         position: absolute;
         opacity: 0;
@@ -103,9 +109,41 @@
         transition: all 1s ease;
         width: 100%;
         border-radius: inherit;
+        filter: none;
+        opacity: 1;
+        transition: filter 0.2s, opacity 0.2s;
     }
 
     .overflow-hidden {
         overflow: hidden;
     }
+
+    /* When a radio is selected, grey out all images */
+    ul.has-selected .img-radio img {
+        filter: grayscale(1);
+        opacity: 0.7;
+    }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const radioButtons = document.querySelectorAll('input[type="radio"][name="{{ $getId() }}"]');
+    const ul = document.querySelector('ul[role="list"]');
+
+    function updateGreyScale() {
+        // Check if any radio is selected
+        const checked = Array.from(radioButtons).find(rb => rb.checked);
+        if (checked) {
+            ul.classList.add('has-selected');
+        } else {
+            ul.classList.remove('has-selected');
+        }
+    }
+
+    radioButtons.forEach(rb => {
+        rb.addEventListener('change', updateGreyScale);
+    });
+
+    // Initial check
+    updateGreyScale();
+});
+</script>
