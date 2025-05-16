@@ -1,7 +1,7 @@
 <x-dynamic-component
     :component="$getFieldWrapperView()"
 >
-    <ul role="list" class="grid gap-8 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 p-4 relative">
+    <ul wire:ignore role="list" class="grid gap-8 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 p-4 relative">
         @foreach ($getOptions() as $value => $image)
             <li class="overflow-hidden relative">
                 <label class="relative cursor-pointer block">
